@@ -1,0 +1,2 @@
+Vl Faturamento Total
+Qtd Vendida

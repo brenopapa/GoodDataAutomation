@@ -98,5 +98,5 @@ def create_month_related_metrics(driver, project_id, metric_name, metric_id, dat
         time.sleep(10)
     return(0)
 #
-def create_percentage_metric():
+def create_percentage_metric(driver, project_id, dividend_metric, divider_metric):
     return(0)

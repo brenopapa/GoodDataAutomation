@@ -98,5 +98,27 @@ def create_month_related_metrics(driver, project_id, metric_name, metric_id, dat
         time.sleep(10)
     return(0)
 #
-def create_percentage_metric(driver, project_id, dividend_metric, divider_metric):
+def create_percentage_metric(driver, project_id, dividend_metric, divider_metric, metric_name):
+    name_list = ['KPI - % Var {}']
+    code_list = ['SELECT [{}] / [{}] - 1']
+    time.sleep(5)
+    for i in range(0, len(code_list)):
+        time.sleep(5)
+        frame_metriceditor = driver.find_element_by_xpath("//iframe[@class='metricEditorFrame']")
+        driver.switch_to.frame(frame_metriceditor)
+        time.sleep(10)
+        tag_custommetric = driver.find_element_by_xpath("//div[@class='customMetric']")
+        tag_custommetric.click()
+        actions = ActionChains(driver)
+        actions = actions.send_keys(name_list[i].format(metric_name))
+        actions.perform()
+        actions = actions.send_keys(Keys.TAB)
+        actions.perform()
+        actions = actions.send_keys(code_list[i].format(dividend_metric, divider_metric))
+        actions.perform()
+        tag_addmetric = driver.find_element_by_xpath("//button[@class='button editor add']")
+        tag_addmetric.click()
+        time.sleep(5)
+        driver.get('https://analytics.totvs.com.br/#s=/gdc/projects/' + project_id + '|objectPage|none|metric')
+        time.sleep(10)
     return(0)

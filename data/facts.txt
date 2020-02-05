@@ -1,2 +1,2 @@
-Vl Faturamento Total
-Qtd Vendida
+Vl Faturamento
+Vl Desconto

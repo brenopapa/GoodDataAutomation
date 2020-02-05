@@ -11,8 +11,8 @@ fact_file = open('facts.txt', 'r').read().splitlines()
 # formatação da metrica
 #
 project_id = 's2vfuj27fr38xqyn1kt1mkfynw89hg0h'
-username = 'suporte.gd@totvs.com.br'
-password = 'fastanalytics'
+username = ''
+password = ''
 date_attribute_name = 'Month/Year (Data)' #ler campo do arquivo facts.txt
 
 auth_cookie = lib.gooddata_api_login(username, password)

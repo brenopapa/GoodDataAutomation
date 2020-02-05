@@ -7,9 +7,9 @@ fact_file = open('facts.txt','r').read().splitlines()
     #wait until element is clickable, not wait x seconds
     #exception treatment and user basic interface/text
 #
-project_id = 'yr2dq0d2i93sc04hx6t6uo91ww809qch'
-username = 'suporte.gd@totvs.com.br'
-password = 'fastanalytics'
+project_id = ''
+username = ''
+password = ''
 date_attribute_name = 'Month/Year (Data)'
 
 auth_cookie = lib.gooddata_api_login(username,password)

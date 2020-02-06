@@ -12,8 +12,8 @@ fact_file = open('facts.txt', 'r').read().splitlines()
 # formatação da metrica
 #
 project_id = 's2vfuj27fr38xqyn1kt1mkfynw89hg0h'
-username = ''
-password = ''
+username = 'suporte.gd@totvs.com.br'
+password = 'fastanalytics'
 date_attribute_name = 'Month/Year (Data)' #ler campo do arquivo facts.txt
 
 auth_cookie = api_lib.gooddata_api_login(username, password)
@@ -32,9 +32,9 @@ for element in fact_file:
 
     metrics = api_lib.get_metric_list(auth_cookie, project_id)
 
-    for metric_name, metric_id in metrics.items():
-        if metric_name[0:3] == 'KPI':
-            web_lib.create_month_related_metrics(driver, project_id, metric_name, metric_id, date_attribute)
+for metric_name, metric_id in metrics.items():
+    if metric_name[0:3] == 'KPI':
+        web_lib.create_month_related_metrics(driver, project_id, metric_name, metric_id, date_attribute)
 
 metrics = api_lib.get_metric_list(auth_cookie, project_id)
 

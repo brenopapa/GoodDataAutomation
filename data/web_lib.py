@@ -3,55 +3,22 @@ import time
 import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 #
 def gooddata_website_login(driver, project_id, username, password):
     driver.get('https://analytics.totvs.com.br/#s=/gdc/projects/'+ project_id +'|objectPage|none|metric')
-    time.sleep(10)
-    driver.find_element_by_xpath("//input[@id='ember894']").send_keys(username)
-    driver.find_element_by_xpath("//input[@id='ember901']").send_keys(password)
+    username_box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//input[@id='ember894']")))
+    username_box.send_keys(username)
+    password_box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//input[@id='ember901']")))
+    password_box.send_keys(password)
     driver.find_element_by_xpath("//button[@id='ember949']").click()
-    time.sleep(10)
-#
-def gooddata_api_login(username, password):
-    login_request = requests.post('https://analytics.totvs.com.br/gdc/account/login'
-                                  , headers={'Accept':'application/json', 'Content-type':'application/json'} 
-                                  ,json = {'postUserLogin':{"login": username, "password": password, "remember": 1}})
-    auth_cookie = {login_request.headers['Set-Cookie'].split("; ")[0].split("=")[0] : login_request.headers['Set-Cookie'].split("; ")[0].split("=")[1]}
-    return(auth_cookie)
-#
-def get_fact_list(auth_cookie, project_id):
-    fact_api_response = requests.get('https://analytics.totvs.com.br/gdc/md/' + project_id + '/query/facts'
-                                  , headers={'Accept':'application/json', 'Content-type':'application/json'} 
-                                  , cookies = auth_cookie)
-    fact_json = json.loads(fact_api_response.text)
-    fact_dict = {}
-    for element in range(0, len(fact_json['query']['entries'])):
-        fact_dict[fact_json['query']['entries'][element]['title']] = fact_json['query']['entries'][element]['link']
-    return(fact_dict)
-#
-def get_attribute_list(auth_cookie, project_id):
-    attribute_api_response = requests.get('https://analytics.totvs.com.br/gdc/md/' + project_id + '/query/attributes'
-                                  , headers={'Accept':'application/json', 'Content-type':'application/json'} 
-                                  , cookies = auth_cookie)
-    attribute_json = json.loads(attribute_api_response.text)
-    attribute_dict = {}
-    for element in range(0, len(attribute_json['query']['entries'])):
-        attribute_dict[attribute_json['query']['entries'][element]['title']] = attribute_json['query']['entries'][element]['link']
-    return(attribute_dict)
-#
-def get_metric_list(auth_cookie, project_id):
-    metric_api_response = requests.get('https://analytics.totvs.com.br/gdc/md/' + project_id + '/query/metrics'
-                                  , headers={'Accept':'application/json', 'Content-type':'application/json'} 
-                                  , cookies = auth_cookie)
-    metric_json = json.loads(metric_api_response.text)
-    metric_dict = {}
-    for element in range(0, len(metric_json['query']['entries'])):
-        metric_dict[metric_json['query']['entries'][element]['title']] = metric_json['query']['entries'][element]['link']
-    return(metric_dict)
 #
 def create_basic_metrics(driver, project_id, fact_name, fact_id):
     code_list = ['SELECT SUM ([{}])']
     for i in range(0,len(code_list)):
+        #group_title = wait.until(EC.presence_of_element_located((By.XPATH, x_arg)))
         time.sleep(5)
         frame_metriceditor = driver.find_element_by_xpath("//iframe[@class='metricEditorFrame']")
         driver.switch_to.frame(frame_metriceditor)

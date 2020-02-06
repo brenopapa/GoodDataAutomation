@@ -1,4 +1,5 @@
-import lib
+import api_lib
+import web_lib
 from selenium import webdriver
 
 fact_file = open('facts.txt', 'r').read().splitlines()
@@ -15,27 +16,27 @@ username = ''
 password = ''
 date_attribute_name = 'Month/Year (Data)' #ler campo do arquivo facts.txt
 
-auth_cookie = lib.gooddata_api_login(username, password)
+auth_cookie = api_lib.gooddata_api_login(username, password)
 
 driver = webdriver.Chrome(executable_path='./chromedriver/chromedriver.exe')
-lib.gooddata_website_login(driver, project_id, username, password)
+web_lib.gooddata_website_login(driver, project_id, username, password)
 
-facts = lib.get_fact_list(auth_cookie, project_id)
-attributes = lib.get_attribute_list(auth_cookie, project_id)
+facts = api_lib.get_fact_list(auth_cookie, project_id)
+attributes = api_lib.get_attribute_list(auth_cookie, project_id)
 date_attribute = attributes[date_attribute_name]
 
 for element in fact_file:
     for fact_name, fact_id in facts.items():
         if element == fact_name:
-            lib.create_basic_metrics(driver, project_id, fact_name, fact_id)
+            web_lib.create_basic_metrics(driver, project_id, fact_name, fact_id)
 
-metrics = lib.get_metric_list(auth_cookie, project_id)
+    metrics = api_lib.get_metric_list(auth_cookie, project_id)
 
-for metric_name, metric_id in metrics.items():
-    if metric_name[0:3] == 'KPI':
-        lib.create_month_related_metrics(driver, project_id, metric_name, metric_id, date_attribute)
+    for metric_name, metric_id in metrics.items():
+        if metric_name[0:3] == 'KPI':
+            web_lib.create_month_related_metrics(driver, project_id, metric_name, metric_id, date_attribute)
 
-metrics = lib.get_metric_list(auth_cookie, project_id)
+metrics = api_lib.get_metric_list(auth_cookie, project_id)
 
 for element in fact_file:
     for metric_name, metric_id in metrics.items():
@@ -45,7 +46,7 @@ for element in fact_file:
             month_metric_name = metric_name
             month_metric_id = metric_id
     if sum_metric_id != '' and month_metric_id != '':
-        lib.create_percentage_metric(driver, project_id, sum_metric_id, month_metric_id, month_metric_name)
+        web_lib.create_percentage_metric(driver, project_id, sum_metric_id, month_metric_id, month_metric_name)
 
 for element in fact_file:
     for metric_name, metric_id in metrics.items():
@@ -55,7 +56,7 @@ for element in fact_file:
             month_metric_name = metric_name
             month_metric_id = metric_id
     if sum_metric_id != '' and month_metric_id != '':
-        lib.create_percentage_metric(driver, project_id, sum_metric_id, month_metric_id, month_metric_name)
+        web_lib.create_percentage_metric(driver, project_id, sum_metric_id, month_metric_id, month_metric_name)
 
 driver.quit()
 

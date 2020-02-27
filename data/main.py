@@ -11,10 +11,10 @@ fact_file = open('facts.txt', 'r').read().splitlines()
 # remove 'KPI - ' of the metric's name
 # formatação da metrica
 #
-project_id = 's2vfuj27fr38xqyn1kt1mkfynw89hg0h'
-username = 'suporte.gd@totvs.com.br'
-password = 'fastanalytics'
-date_attribute_name = 'Month/Year (Data)' #ler campo do arquivo facts.txt
+project_id = 'z8t1ih2rr6kxn9qywwjo0wj6hrlxshcr'
+username = ''
+password = ''
+date_attribute_name = 'Month/Year (Data Criação Treinamento)' #ler campo do arquivo facts.txt
 
 auth_cookie = api_lib.gooddata_api_login(username, password)
 

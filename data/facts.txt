@@ -1,2 +1,1 @@
-Vl Faturamento
-Vl Desconto
+Nota
